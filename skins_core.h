@@ -15,6 +15,8 @@
 #include "include/menus.h"
 #include "include/mysql_mm.h"
 #include "include/sql_mm.h"
+#include "include/vip.h"
+#include "include/admin.h"
 #include "include/resource_precacher.h"
 #include <string>
 #include <vector>
