@@ -196,7 +196,11 @@ static void ApplySkinModel(int iSlot, const std::string& skinId)
     if (iTeam < 2 || iTeam > 3) return;
 
     if (g_Players[iSlot].sDefaultModel[iTeam].empty())
-        g_Players[iSlot].sDefaultModel[iTeam] = pPawn->GetModelName().String();
+    {
+        const char* szCur = pPawn->GetModelName().String();
+        if (szCur && szCur[0])
+            g_Players[iSlot].sDefaultModel[iTeam] = szCur;
+    }
 
     const std::string& sModel = (iTeam == 2)
         ? PickRandom(it->second.vecModels_T)
@@ -222,7 +226,11 @@ static void ApplyDefaultSkin(int iSlot)
     if (sModel.empty()) return;
 
     if (g_Players[iSlot].sDefaultModel[iTeam].empty())
-        g_Players[iSlot].sDefaultModel[iTeam] = pPawn->GetModelName().String();
+    {
+        const char* szCur = pPawn->GetModelName().String();
+        if (szCur && szCur[0])
+            g_Players[iSlot].sDefaultModel[iTeam] = szCur;
+    }
 
     SetModel(pPawn, sModel);
 }
@@ -883,10 +891,6 @@ static void OnPlayerSpawn(const char* szName, IGameEvent* pEvent, bool bDontBroa
     int iSlot = pEvent->GetInt("userid");
     if (iSlot < 0 || iSlot >= 64) return;
 
-    g_Players[iSlot].sDefaultModel[2] = "";
-    g_Players[iSlot].sDefaultModel[3] = "";
-
-
     if (g_pPlayers->IsFakeClient(iSlot)) return;
 
     if (g_fApplyDelay <= 0.0f) { ApplySkinOnSpawn(iSlot); return; }
@@ -1123,7 +1127,7 @@ const char* SkinsCore::GetLicense()
 
 const char* SkinsCore::GetVersion()
 {
-	return "1.1";
+	return "1.1.1";
 }
 
 const char* SkinsCore::GetDate()
